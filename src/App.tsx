@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Roster from './components/Roster';
+import {observer} from 'mobx-react-lite';
+import {configure} from 'mobx';
+import {configurePersistable} from 'mobx-persist-store';
 
-function App() {
+// This is enabling batching for handling async functions
+setTimeout(() =>
+    configure({
+        enforceActions: 'never',
+        reactionScheduler: (f) => setTimeout(f),
+    }),
+);
+
+configurePersistable(
+    {
+        storage: window.localStorage,
+    },
+);
+export const App = observer(() => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Roster/>
     </div>
   );
-}
-
-export default App;
+});
